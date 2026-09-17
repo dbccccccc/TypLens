@@ -1,5 +1,7 @@
 # TypLens
 
+https://huggingface.co/dbcccc/TypLens
+
 Current model: **TypLens-V1** (release **v1**).
 
 Native image-to-Typst recognition for printed formula screenshots.
