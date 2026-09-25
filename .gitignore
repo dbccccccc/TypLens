@@ -1,3 +1,7 @@
 *.onnx
 *.safetensors
 *.zip
+
+browser/node_modules/
+browser/public/ort/
+*.download

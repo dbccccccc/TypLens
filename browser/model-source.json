@@ -1,0 +1,50 @@
+{
+  "model": "TypLens V1.1",
+  "repository": "dbcccc/TypLens",
+  "revision": "f98216362a14a3b218f228ed7c007d31825d0ab1",
+  "base_url": "https://huggingface.co/dbcccc/TypLens/resolve/f98216362a14a3b218f228ed7c007d31825d0ab1/",
+  "source_model_sha256": "d42cfd2da242a11ecdb1fe8727ee01e6896a116cd46f74357c4fdce90eebe788",
+  "files": {
+    "token-bytes.json": {
+      "remote": "token-bytes.json",
+      "bytes": 50278,
+      "sha256": "56dda3b8c135390aef1c8e6ca86f5f3598576c4f4bc61184639a1abfb22c5a9d"
+    },
+    "fp32/encoder.onnx": {
+      "remote": "onnx/fp32/encoder.onnx",
+      "bytes": 91338076,
+      "sha256": "acca3ad0660b30d8292b657e3164e54e66d75b594fc05d7d005cb94044579087"
+    },
+    "fp32/decoder.onnx": {
+      "remote": "onnx/fp32/decoder.onnx",
+      "bytes": 25839275,
+      "sha256": "c974116f76b518aa9b7dcd7e310cdaf55054a889433a395a62e0df009daf6caf"
+    },
+    "q8/encoder.onnx": {
+      "remote": "onnx/int8/encoder.onnx",
+      "bytes": 24482005,
+      "sha256": "844a4aee1e22ca0a71d0a5b29c7d9fec00f976f7528a50af2ce1c141deb37ab1"
+    },
+    "q8/decoder.onnx": {
+      "remote": "onnx/int8/decoder.onnx",
+      "bytes": 8638761,
+      "sha256": "9bf4bfd55786c45b7fe92221c0b752c70bb405d028f5e7d4f066814e839b70df"
+    }
+  },
+  "runtime_package": "onnxruntime-web",
+  "runtime_version": "1.22.0",
+  "runtime_files": {
+    "ort.webgpu.min.mjs": {
+      "bytes": 357582,
+      "sha256": "e131e81c9324807e1e6f9103e8f8e936112827dcc9993cde9407a333b1f07ae0"
+    },
+    "ort-wasm-simd-threaded.jsep.mjs": {
+      "bytes": 44677,
+      "sha256": "1cbcba8f2c769c1eecbab66a1b1e55ef11704515bf4306373e3db3c37cf6dcd8"
+    },
+    "ort-wasm-simd-threaded.jsep.wasm": {
+      "bytes": 21872216,
+      "sha256": "b45970d0632383a057c27ca5b660b216f8e00c17cf8db9f6207b5e4abc839368"
+    }
+  }
+}

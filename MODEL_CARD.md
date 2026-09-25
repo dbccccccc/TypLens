@@ -1,5 +1,8 @@
 # TypLens V1.1
 
+For a runnable browser implementation, see [browser/README.md](browser/README.md).
+The example contains inference code only; the training implementation is not included.
+
 TypLens V1.1 converts an image of a printed mathematical formula directly into
 Typst math source. Its 29.2-million-parameter model can run locally in a browser
 using the supplied full-precision or compact ONNX graphs.
@@ -34,7 +37,7 @@ and both model graphs together. V1's RGB input pipeline is incompatible.
 The compact ONNX weights are 71.7% smaller than the FP32 ONNX weights. These
 numbers exclude tokenizer metadata and the application's runtime. Compact means
 dynamic INT8 linear weights; some operations and the caches remain FP32.
-The GitHub release provides a separate ZIP for each ONNX variant.
+Hugging Face provides both ONNX variants; the GitHub browser ZIP bundles both.
 
 This distribution contains weights, tokenizer/configuration, documentation and
 license notices. It contains no training code, optimizer state, training images

@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png -text
+*.onnx -text
+*.safetensors -text
+*.zip -text
+*.wasm -text
+browser/public/model/token-bytes.json -text whitespace=cr-at-eol
+browser/licenses/** -whitespace

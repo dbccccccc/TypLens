@@ -4,24 +4,9 @@ TypLens V1.1 converts an image of a printed mathematical formula directly into
 Typst math source. Its 29.2-million-parameter model can run locally in a browser
 using the supplied full-precision or compact ONNX graphs.
 
-Repository name: **TypLens**. Model version: **V1.1**. Release tag: **TypLens-V1.1**.
+Repository name: **TypLens**. Model version: **V1.1**. Release tag: **v1.1**.
 
 [Hugging Face model repository](https://huggingface.co/dbcccc/TypLens) · [GitHub repository](https://github.com/dbccccccc/TypLens)
-
-## Run the V1.1 browser example
-
-The inference-only [browser example](browser/README.md) includes the matching
-grayscale preprocessing, both model variants and editable Typst output. It does
-not include training code or training data.
-
-**Ready-to-run download:** [typlens-v1.1-browser.zip](https://github.com/dbccccccc/TypLens/releases/download/TypLens-V1.1/typlens-v1.1-browser.zip).
-Extract it, install Node.js 22.13 or newer, run `node serve.mjs` in the extracted
-folder, and open http://127.0.0.1:4173/. Models and runtime are included; no npm
-installation or Hugging Face login is needed for that ZIP.
-
-**From source:** clone this repository, enter `browser`, run `npm ci`, then
-`npm start`. First start downloads the pinned public V1.1 weights and prepares
-the runtime. Later starts reuse verified local files. Images stay in your browser.
 
 ## What changed from V1
 
@@ -51,10 +36,9 @@ numbers exclude tokenizer metadata and the application's runtime. Compact means
 dynamic INT8 linear weights; some operations and the caches remain FP32.
 Hugging Face provides both ONNX variants; the GitHub browser ZIP bundles both.
 
-The model archives contain weights, tokenizer/configuration, documentation and
-license notices. The separate browser example adds inference source; its ready-to-run
-ZIP includes ONNX Runtime Web. Neither distribution contains training code, optimizer
-state or training images. See [release-manifest.json](release-manifest.json)
+This distribution contains weights, tokenizer/configuration, documentation and
+license notices. It contains no training code, optimizer state, training images
+or inference runtime binaries. See [release-manifest.json](release-manifest.json)
 for file hashes and [INFERENCE.md](INFERENCE.md) for integration.
 
 ## Recorded evaluation

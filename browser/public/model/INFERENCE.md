@@ -1,9 +1,5 @@
 # TypLens V1.1 inference contract
 
-A runnable reference implementation is available in [browser/](browser/README.md).
-It provides the preprocessing, cached decoder and editable output described below,
-without including training code. See the repository README for the ready-to-run ZIP.
-
 TypLens V1.1 recognizes a single printed formula crop and directly generates the
 content of a Typst math expression. The consuming application may add `$`
 delimiters. No LaTeX conversion is involved in inference. This is a weights-only

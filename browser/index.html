@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Run an experimental image-to-Typst formula recognizer locally in your browser."
+    />
+    <meta name="theme-color" content="#f4f1e9" />
+    <title>TypLens V1.1 · Image to Typst</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#workbench">Skip to model tester</a>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Formula to Typst model tester home">
+        <span class="brand-mark" aria-hidden="true">
+          <span>∑</span>
+          <i>→</i>
+          <b>{ }</b>
+        </span>
+        <span class="brand-copy">
+          <strong>TypLens</strong>
+          <small>V1.1 · browser inference</small>
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <a
+          class="model-card-link"
+          href="./model/MODEL_CARD.md"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Model card
+          <span aria-hidden="true">↗</span>
+        </a>
+        <div class="model-chip is-loading" id="model-chip" role="status">
+          <span class="model-chip-light" aria-hidden="true"></span>
+          <span id="model-chip-label">Loading model</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span>LOCAL INFERENCE</span>
+            <span>TYPLENS V1.1</span>
+          </p>
+          <h1 id="page-title">
+            Formula images in.
+            <em>Typst out.</em>
+          </h1>
+          <p class="hero-intro">
+            Drop a single rendered formula and run the current recognizer
+            completely inside this browser. No API, no upload, no server-side
+            inference.
+          </p>
+          <label class="model-choice" for="model-variant">
+            <span>Recognition model</span>
+            <select id="model-variant">
+              <option value="fp32" selected>V1.1 · Full precision</option>
+              <option value="q8">V1.1 · Compact</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="model-readout" aria-label="Model summary">
+          <div>
+            <span>Model</span>
+            <strong id="parameter-count">—</strong>
+            <small>parameters</small>
+          </div>
+          <div>
+            <span>Graphs</span>
+            <strong id="model-size">—</strong>
+            <small id="model-precision">Full precision</small>
+          </div>
+          <div>
+            <span id="quality-metric-label">Input</span>
+            <strong id="test-accuracy">—</strong>
+            <small id="quality-metric-detail">One printed formula</small>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="provisional-banner"
+        id="provisional-banner"
+        role="status"
+        hidden
+      >
+        <span>EXPERIMENTAL</span>
+        <div>
+          <strong>TypLens V1.1 · review the generated formula</strong>
+          <p id="release-identity">
+            Recognition runs locally. Generated formulas may contain errors.
+          </p>
+        </div>
+      </section>
+
+      <section class="workbench" id="workbench" aria-label="Formula recognizer">
+        <article class="workbench-panel input-panel">
+          <header class="panel-header">
+            <div>
+              <span class="step-number">01</span>
+              <div>
+                <p class="panel-kicker">INPUT</p>
+                <h2>Formula image</h2>
+              </div>
+            </div>
+            <button class="quiet-button is-hidden" id="clear-image" type="button">
+              Clear
+            </button>
+          </header>
+
+          <input
+            id="file-input"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            hidden
+          />
+
+          <div
+            class="drop-zone"
+            id="drop-zone"
+            role="button"
+            tabindex="0"
+            aria-controls="file-input"
+            aria-label="Choose or drop a formula image"
+          >
+            <div class="drop-empty" id="drop-empty">
+              <span class="upload-glyph" aria-hidden="true">
+                <svg viewBox="0 0 64 64" role="presentation">
+                  <path d="M18 9h28l9 9v37H9V9h9Z" />
+                  <path d="M46 9v10h10M19 41l9-9 7 7 5-5 7 7M22 24h13" />
+                </svg>
+              </span>
+              <div>
+                <strong>Drop a formula screenshot</strong>
+                <span>PNG, JPEG, or WebP · up to 20 MB</span>
+              </div>
+              <span class="choose-label">Choose image</span>
+            </div>
+
+            <div class="image-preview is-hidden" id="image-preview">
+              <img id="source-image" alt="Selected formula" />
+              <span class="replace-hint">Click or drop to replace</span>
+            </div>
+          </div>
+
+          <div class="input-actions">
+            <button class="secondary-button" id="choose-image" type="button">
+              <span aria-hidden="true">＋</span>
+              Choose image
+            </button>
+            <button class="secondary-button" id="use-example" type="button">
+              <span aria-hidden="true">◇</span>
+              Use example
+            </button>
+            <span class="paste-hint">
+              or paste a screenshot with
+              <kbd>Ctrl</kbd><span>+</span><kbd>V</kbd>
+            </span>
+          </div>
+
+          <label class="preprocess-choice" for="normalize-margins">
+            <input id="normalize-margins" type="checkbox" checked />
+            <span>
+              <strong>Normalize formula margins</strong>
+              <small>Remove surrounding blank space and add an even border. Turn off to compare the original crop.</small>
+            </span>
+          </label>
+
+          <div class="image-facts is-hidden" id="image-facts">
+            <div>
+              <span>Source</span>
+              <strong id="source-dimensions">—</strong>
+            </div>
+            <span class="process-arrow" aria-hidden="true">→</span>
+            <div>
+              <span>Model input</span>
+              <strong id="input-dimensions">—</strong>
+            </div>
+            <span class="process-arrow" aria-hidden="true">→</span>
+            <div>
+              <span>Polarity</span>
+              <strong id="polarity-state">—</strong>
+            </div>
+          </div>
+
+          <div class="processed-block is-hidden" id="processed-block">
+            <div class="processed-heading">
+              <div>
+                <span>PREPROCESSED TENSOR</span>
+                <small>Image as seen by the model</small>
+              </div>
+              <span id="image-file-meta">—</span>
+            </div>
+            <div class="processed-canvas-wrap">
+              <canvas
+                id="processed-canvas"
+                width="256"
+                height="128"
+                aria-label="Preprocessed model input preview"
+              ></canvas>
+            </div>
+          </div>
+
+          <div class="run-block">
+            <button class="run-button" id="run-model" type="button" disabled>
+              <span id="run-button-label">Preparing model…</span>
+              <span class="run-arrow" aria-hidden="true">→</span>
+            </button>
+            <p id="input-status" aria-live="polite">
+              Add an image while the local model loads.
+            </p>
+          </div>
+        </article>
+
+        <article class="workbench-panel output-panel">
+          <header class="panel-header">
+            <div>
+              <span class="step-number step-number--dark">02</span>
+              <div>
+                <p class="panel-kicker">OUTPUT</p>
+                <h2>Typst formula</h2>
+              </div>
+            </div>
+            <button
+              class="quiet-button quiet-button--dark"
+              id="copy-output"
+              type="button"
+              disabled
+            >
+              Copy
+            </button>
+          </header>
+
+          <div class="output-stage">
+            <div class="output-empty" id="output-empty">
+              <span class="output-orbit" aria-hidden="true">
+                <i></i><i></i><i></i>
+                <b>{ }</b>
+              </span>
+              <strong>Your Typst code will appear here</strong>
+              <p>
+                Add a printed formula screenshot, then select Recognize formula.
+              </p>
+            </div>
+
+            <div class="output-result is-hidden" id="output-result">
+              <div class="code-label">
+                <span>formula.typ</span>
+                <span>editable</span>
+              </div>
+              <textarea
+                id="typst-output"
+                aria-label="Recognized Typst formula"
+                spellcheck="false"
+              ></textarea>
+              <div class="reference-check is-hidden" id="reference-check">
+                <span class="reference-light" aria-hidden="true"></span>
+                <span id="reference-message">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="decode-progress is-hidden" id="decode-progress" role="status">
+            <span class="decode-spinner" aria-hidden="true"></span>
+            <div>
+              <strong id="decode-title">Reading formula…</strong>
+              <span id="decode-detail">Encoder pass</span>
+            </div>
+          </div>
+
+          <dl class="metrics" aria-label="Inference metrics">
+            <div>
+              <dt>Total</dt>
+              <dd id="total-time">—</dd>
+            </div>
+            <div>
+              <dt>Encoder</dt>
+              <dd id="encoder-time">—</dd>
+            </div>
+            <div>
+              <dt>Decoder</dt>
+              <dd id="decoder-time">—</dd>
+            </div>
+            <div>
+              <dt>Tokens</dt>
+              <dd id="token-count">—</dd>
+            </div>
+            <div>
+              <dt>Generation</dt>
+              <dd id="confidence">—</dd>
+            </div>
+          </dl>
+
+          <div class="output-note" id="output-note">
+            <span aria-hidden="true">◎</span>
+            <p>
+              Review the formula before placing it between
+              <code>$</code> delimiters in Typst.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section class="trust-strip" aria-label="Runtime details">
+        <div class="trust-lead">
+          <span class="privacy-mark" aria-hidden="true">⌁</span>
+          <div>
+            <h2>Your images stay in this tab.</h2>
+            <p>
+              Image decoding, preprocessing, encoder inference, and cached
+              autoregressive decoding all run locally.
+            </p>
+          </div>
+        </div>
+        <dl>
+          <div>
+            <dt>Execution</dt>
+            <dd id="execution-detail">Loading…</dd>
+          </div>
+          <div>
+            <dt>Input</dt>
+            <dd>Printed formula screenshot</dd>
+          </div>
+          <div>
+            <dt>Interface license</dt>
+            <dd>MIT</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="model-loader" id="model-loader" aria-live="polite">
+        <div>
+          <span class="loader-kicker">LOCAL MODEL</span>
+          <strong id="model-load-title">Loading ONNX Runtime…</strong>
+          <p id="model-load-detail">
+            Initializing the browser WASM execution provider.
+          </p>
+        </div>
+        <div class="loader-track" aria-hidden="true">
+          <span id="loader-progress"></span>
+        </div>
+        <button class="retry-button is-hidden" id="retry-model" type="button">
+          Retry model load
+        </button>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>TypLens V1.1 · browser inference example</span>
+      <span>Open source interface · images stay local</span>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

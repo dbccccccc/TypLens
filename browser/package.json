@@ -1,0 +1,20 @@
+{
+  "name": "typlens-browser-example",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "setup": "node setup.mjs",
+    "prestart": "node setup.mjs",
+    "start": "node serve.mjs",
+    "dev": "npm start",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "onnxruntime-web": "1.22.0"
+  }
+}

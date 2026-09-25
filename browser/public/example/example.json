@@ -1,0 +1,9 @@
+{
+  "schema_version": "local-browser-example-v1",
+  "sample_id": "project-owned-v1",
+  "expected_typst": "x + y",
+  "provenance": "Project-authored formula rendered with Typst 0.14.2; MIT licensed",
+  "source_typst": "$ x + y $",
+  "license": "MIT",
+  "image_url": "./formula.png"
+}

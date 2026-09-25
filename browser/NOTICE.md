@@ -48,12 +48,18 @@ checkpoint; it was not initialized from the released V1 checkpoint.
   clearance for those source materials.
 
 No dataset images, original annotations, or source PDFs are included. The model
-license does not relicense those materials. Runtime libraries, Typst, MiTeX, and
-ONNX Runtime binaries are also not included and retain their own licenses.
+license does not relicense those materials. The model archives omit runtime libraries. This browser example installs
+ONNX Runtime Web 1.22.0 from npm; its ready-to-run ZIP includes the JavaScript/WASM
+runtime with its Microsoft MIT license and complete third-party notices.
+Typst and MiTeX are not bundled.
 
 
-## Optional browser example
+## Browser inference source and resampling
 
-The browser/ directory adds MIT-licensed inference source, without training code.
-The browser ZIP also includes ONNX Runtime Web 1.22.0; see browser/NOTICE.md
-and browser/licenses/ for its notices and the Pillow-compatible resampler attribution.
+The browser interface, preprocessing and inference code are released under
+the project MIT license. They contain no training implementation.
+The included x + y image is a project-authored example under MIT.
+
+The bicubic resampler follows Pillow 12.2.0 Resample.c to match the model
+preprocessing. Pillow/PIL copyright and MIT-CMU terms are retained in
+licenses/PILLOW-LICENSE.txt. Pillow itself is not bundled.
